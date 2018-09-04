@@ -1,0 +1,11 @@
+{
+  "name": "zlayer",
+  "version": "0.0.0",
+  "main": "src/index.js",
+  "repository": "git@github.com:doodlewind/zlayer.git",
+  "author": "Yifeng Wang <i@ewind.us>",
+  "license": "MIT",
+  "devDependencies": {
+    "babel-preset-stage-0": "^6.24.1"
+  }
+}
