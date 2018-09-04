@@ -1,8 +1,9 @@
 import { Layer } from '../src/layer'
-import url from './lenna.gif'
+import plugin from '../src/plugins/basic'
+import url from './moire-test.png'
 
 console.clear()
 const el = document.getElementById('container')
-const layer = new Layer(el, { url, bleeding: 10 })
+const layer = new Layer(el, { url, plugin, bleeding: 0 })
 layer.render()
 window.layer = layer

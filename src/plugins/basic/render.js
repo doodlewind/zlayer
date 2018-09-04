@@ -1,4 +1,4 @@
-import { create, ortho, rotate } from './math'
+import { create, ortho, rotate } from '../../math'
 
 export const render = (gl, canvas, programInfo, buffers) => {
   gl.clearColor(0.0, 0.0, 0.0, 0.0)
