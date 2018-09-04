@@ -1,6 +1,7 @@
 /* eslint-env browser */
 import { initProgram } from './shaders'
 import { initBuffers } from './buffers'
+import { initTexture } from './texture'
 import { render } from './render'
 
 export class Layer {
@@ -8,6 +9,7 @@ export class Layer {
     this.width = options.width || 0
     this.height = options.height || 0
     this.bleeding = options.bleeding
+    this.url = options.url || ''
 
     const { bleeding } = this
     if (el instanceof HTMLCanvasElement) {
@@ -30,6 +32,7 @@ export class Layer {
     this.gl = this.canvas.getContext('webgl', { preserveDrawingBuffer: true })
     this.programInfo = initProgram(this.gl)
     this.buffers = initBuffers(this.gl, this.width, this.height)
+    this.texture = initTexture(this.gl, this.url, this.render.bind(this))
   }
 
   render () {

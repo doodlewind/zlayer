@@ -23,19 +23,22 @@ export const render = (gl, canvas, programInfo, buffers) => {
   const angle = Math.PI / 180 * 0 // Math.PI / 180 * deg
   rotate(modelViewMatrix, modelViewMatrix, angle, [0.0, 0.0, 1.0])
 
-  gl.useProgram(programInfo.program)
+  const FSIZE = Float32Array.BYTES_PER_ELEMENT
 
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.position)
-  gl.vertexAttribPointer(
-    programInfo.attribLocations.vertexPosition, 2, gl.FLOAT, false, 0, 0
-  )
-  gl.enableVertexAttribArray(programInfo.attribLocations.vertexPosition)
-  gl.uniformMatrix4fv(
-    programInfo.uniformLocations.projectionMatrix, false, projectionMatrix
-  )
-  gl.uniformMatrix4fv(
-    programInfo.uniformLocations.modelViewMatrix, false, modelViewMatrix
-  )
+  const { program, attributes, uniforms } = programInfo
+  gl.useProgram(program)
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.positions)
+
+  const { position, texCoord } = attributes
+  // Set vertex positions.
+  gl.vertexAttribPointer(position, 2, gl.FLOAT, false, FSIZE * 4, 0)
+  gl.enableVertexAttribArray(position)
+  // Set texture coords.
+  gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, FSIZE * 4, FSIZE * 2)
+  gl.enableVertexAttribArray(texCoord)
+
+  gl.uniformMatrix4fv(uniforms.projectionMatrix, false, projectionMatrix)
+  gl.uniformMatrix4fv(uniforms.modelViewMatrix, false, modelViewMatrix)
 
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 }

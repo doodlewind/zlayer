@@ -1,15 +1,22 @@
 const vsSource = `
-  attribute vec4 aVertexPosition;
+  attribute vec4 aPosition;
+  attribute vec2 aTexCoord;
   uniform mat4 uProjectionMatrix;
   uniform mat4 uModelViewMatrix;
+  varying highp vec2 vTexCoord;
+
   void main() {
-    gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+    gl_Position = uProjectionMatrix * uModelViewMatrix * aPosition;
+    vTexCoord = aTexCoord;
   }
 `
 
 const fsSource = `
+  varying highp vec2 vTexCoord;
+  uniform sampler2D uSampler;
+
   void main() {
-    gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+    gl_FragColor = texture2D(uSampler, vTexCoord);
   }
 `
 
@@ -47,21 +54,16 @@ const initShaderProgram = (gl, vsSource, fsSource) => {
 }
 
 export const initProgram = (gl) => {
-  const shaderProgram = initShaderProgram(gl, vsSource, fsSource)
+  const program = initShaderProgram(gl, vsSource, fsSource)
   const programInfo = {
-    program: shaderProgram,
-    attribLocations: {
-      vertexPosition: gl.getAttribLocation(
-        shaderProgram, 'aVertexPosition'
-      )
+    program,
+    attributes: {
+      position: gl.getAttribLocation(program, 'aPosition'),
+      texCoord: gl.getAttribLocation(program, 'aTexCoord')
     },
-    uniformLocations: {
-      projectionMatrix: gl.getUniformLocation(
-        shaderProgram, 'uProjectionMatrix'
-      ),
-      modelViewMatrix: gl.getUniformLocation(
-        shaderProgram, 'uModelViewMatrix'
-      )
+    uniforms: {
+      projectionMatrix: gl.getUniformLocation(program, 'uProjectionMatrix'),
+      modelViewMatrix: gl.getUniformLocation(program, 'uModelViewMatrix')
     }
   }
   return programInfo

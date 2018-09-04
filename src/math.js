@@ -50,34 +50,6 @@ export function ortho (out, left, right, bottom, top, near, far) {
   return out
 }
 
-export function perspective (out, fovy, aspect, near, far) {
-  let f = 1.0 / Math.tan(fovy / 2)
-  let nf
-  out[0] = f / aspect
-  out[1] = 0
-  out[2] = 0
-  out[3] = 0
-  out[4] = 0
-  out[5] = f
-  out[6] = 0
-  out[7] = 0
-  out[8] = 0
-  out[9] = 0
-  out[11] = -1
-  out[12] = 0
-  out[13] = 0
-  out[15] = 0
-  if (far != null && far !== Infinity) {
-    nf = 1 / (near - far)
-    out[10] = (far + near) * nf
-    out[14] = (2 * far * near) * nf
-  } else {
-    out[10] = -1
-    out[14] = -2 * near
-  }
-  return out
-}
-
 export function translate (out, a, [x, y, z]) {
   let a00, a01, a02, a03
   let a10, a11, a12, a13
@@ -156,46 +128,6 @@ export function rotate (out, a, rad, [x, y, z]) {
     out[14] = a[14]
     out[15] = a[15]
   }
-  return out
-}
-
-export function rotateX (out, a, b, c) {
-  let [p, r] = [[], []]
-  // Translate point to the origin
-  p[0] = a[0] - b[0]
-  p[1] = a[1] - b[1]
-  p[2] = a[2] - b[2]
-
-  // perform rotation
-  r[0] = p[0]
-  r[1] = p[1] * Math.cos(c) - p[2] * Math.sin(c)
-  r[2] = p[1] * Math.sin(c) + p[2] * Math.cos(c)
-
-  // translate to correct position
-  out[0] = r[0] + b[0]
-  out[1] = r[1] + b[1]
-  out[2] = r[2] + b[2]
-
-  return out
-}
-
-export function rotateY (out, a, b, c) {
-  let [p, r] = [[], []]
-  // Translate point to the origin
-  p[0] = a[0] - b[0]
-  p[1] = a[1] - b[1]
-  p[2] = a[2] - b[2]
-
-  // perform rotation
-  r[0] = p[2] * Math.sin(c) + p[0] * Math.cos(c)
-  r[1] = p[1]
-  r[2] = p[2] * Math.cos(c) - p[0] * Math.sin(c)
-
-  // translate to correct position
-  out[0] = r[0] + b[0]
-  out[1] = r[1] + b[1]
-  out[2] = r[2] + b[2]
-
   return out
 }
 
