@@ -1,10 +1,10 @@
-import { initProgram } from './shaders'
+import { initShaders } from './shaders'
 import { initBuffer } from './buffer'
 import { initTexture } from './texture'
 import { render } from './render'
 
 const BasicPlugin = {
-  initProgram,
+  initShaders,
   initBuffer,
   initTexture,
   render

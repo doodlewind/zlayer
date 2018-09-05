@@ -53,9 +53,9 @@ const initShaderProgram = (gl, vsSource, fsSource) => {
   return shaderProgram
 }
 
-export const initProgram = (gl) => {
+export const initShaders = gl => {
   const program = initShaderProgram(gl, vsSource, fsSource)
-  const programInfo = {
+  const shader = {
     program,
     attributes: {
       position: gl.getAttribLocation(program, 'aPosition'),
@@ -66,5 +66,5 @@ export const initProgram = (gl) => {
       modelViewMatrix: gl.getUniformLocation(program, 'uModelViewMatrix')
     }
   }
-  return programInfo
+  return [shader]
 }

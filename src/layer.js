@@ -5,7 +5,7 @@ export class Layer {
     this.width = options.width || 0
     this.height = options.height || 0
     const {
-      initProgram, initBuffer, initTexture, initFramebufferObject, render
+      initShaders, initBuffer, initTexture, initFramebufferObject, render
     } = options.plugin
 
     this.bleeding = options.bleeding
@@ -32,13 +32,13 @@ export class Layer {
     options.bledHeight = bleeding ? this.height + bleeding * 2 : this.height
 
     this.render = () => {
-      const { gl, programInfo, buffer, texture, fbo } = this
-      render(gl, options, programInfo, buffer, texture, fbo)
+      const { gl, shaders, buffer, texture, fbo } = this
+      render(gl, options, shaders, buffer, texture, fbo)
     }
     this.canvas.width = options.bledWidth
     this.canvas.height = options.bledHeight
     this.gl = this.canvas.getContext('webgl', { preserveDrawingBuffer: true })
-    this.programInfo = initProgram(this.gl)
+    this.shaders = initShaders(this.gl)
     // Before first pass, use position without bleeding.
     this.buffer = initBuffer(this.gl, this.width, this.height)
 

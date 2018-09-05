@@ -1,6 +1,6 @@
 import { create, ortho, rotate } from '../../math'
 
-export const render = (gl, options, programInfo, buffer) => {
+export const render = (gl, options, shaders, buffer) => {
   gl.clearColor(0.0, 0.0, 0.0, 0.0)
   gl.clearDepth(1.0)
   gl.enable(gl.DEPTH_TEST)
@@ -26,7 +26,7 @@ export const render = (gl, options, programInfo, buffer) => {
 
   const FSIZE = Float32Array.BYTES_PER_ELEMENT
 
-  const { program, attributes, uniforms } = programInfo
+  const { program, attributes, uniforms } = shaders[0]
   gl.useProgram(program)
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer.positions)
 

@@ -1,6 +1,6 @@
 import { create, ortho, rotate } from '../../math'
 
-const drawPlane = (gl, w, h, programInfo, buffer) => {
+const drawPlane = (gl, w, h, shaders, buffer) => {
   const projectionMatrix = create()
   ortho(projectionMatrix, -w / 2, w / 2, h / 2, -h / 2, -1, 1)
 
@@ -11,7 +11,7 @@ const drawPlane = (gl, w, h, programInfo, buffer) => {
 
   const FSIZE = Float32Array.BYTES_PER_ELEMENT
 
-  const { program, attributes, uniforms } = programInfo
+  const { program, attributes, uniforms } = shaders[0]
   gl.useProgram(program)
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer.positions)
 
@@ -29,7 +29,7 @@ const drawPlane = (gl, w, h, programInfo, buffer) => {
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 }
 
-export const render = (gl, options, programInfo, buffer, texture, fbo) => {
+export const render = (gl, options, shaders, buffer, texture, fbo) => {
   const { plugin, bledWidth, bledHeight } = options
 
   gl.bindFramebuffer(gl.FRAMEBUFFER, fbo.framebuffer)
@@ -38,7 +38,7 @@ export const render = (gl, options, programInfo, buffer, texture, fbo) => {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
   gl.activeTexture(gl.TEXTURE0)
   gl.bindTexture(gl.TEXTURE_2D, texture)
-  drawPlane(gl, bledWidth, bledHeight, programInfo, buffer)
+  drawPlane(gl, bledWidth, bledHeight, shaders, buffer)
 
   const { initBuffer } = plugin
   const newBuffer = initBuffer(gl, bledWidth, bledHeight)
@@ -57,5 +57,5 @@ export const render = (gl, options, programInfo, buffer, texture, fbo) => {
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
 
-  drawPlane(gl, bledWidth, bledHeight, programInfo, newBuffer)
+  drawPlane(gl, bledWidth, bledHeight, shaders, newBuffer)
 }
