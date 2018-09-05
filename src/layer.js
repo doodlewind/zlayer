@@ -5,8 +5,9 @@ export class Layer {
     this.width = options.width || 0
     this.height = options.height || 0
     const {
-      initProgram, initBuffers, initTexture, render
+      initProgram, initBuffer, initTexture, initFramebufferObject, render
     } = options.plugin
+
     this.bleeding = options.bleeding
     this.url = options.url || ''
 
@@ -16,26 +17,36 @@ export class Layer {
     } else {
       const { width, height } = el.getBoundingClientRect()
       // Ignore default size when use bleeding.
-      if (this.bleeding !== undefined) {
+      if (bleeding !== undefined) {
         [this.width, this.height] = [width, height]
       }
       this.canvas = document.createElement('canvas')
       this.canvas.style.position = 'absolute'
-      this.canvas.style.left = `-${bleeding}px`
-      this.canvas.style.top = `-${bleeding}px`
+      this.canvas.style.left = `-${bleeding || 0}px`
+      this.canvas.style.top = `-${bleeding || 0}px`
       el.style.position = 'relative'
       el.appendChild(this.canvas)
     }
 
-    this.render = () => {
-      render(this.gl, this.canvas, this.programInfo, this.buffers)
-    }
+    options.bledWidth = bleeding ? this.width + bleeding * 2 : this.width
+    options.bledHeight = bleeding ? this.height + bleeding * 2 : this.height
 
-    this.canvas.width = bleeding ? this.width + bleeding * 2 : this.width
-    this.canvas.height = bleeding ? this.height + bleeding * 2 : this.height
+    this.render = () => {
+      const { gl, programInfo, buffer, texture, fbo } = this
+      render(gl, options, programInfo, buffer, texture, fbo)
+    }
+    this.canvas.width = options.bledWidth
+    this.canvas.height = options.bledHeight
     this.gl = this.canvas.getContext('webgl', { preserveDrawingBuffer: true })
     this.programInfo = initProgram(this.gl)
-    this.buffers = initBuffers(this.gl, this.width, this.height)
+    // Before first pass, use position without bleeding.
+    this.buffer = initBuffer(this.gl, this.width, this.height)
+
+    // Async render on image loaded.
     this.texture = initTexture(this.gl, this.url, this.render)
+    // Init FBO without bleeding.
+    this.fbo = initFramebufferObject
+      ? initFramebufferObject(this.gl, options.bledWidth, options.bledHeight)
+      : null
   }
 }

@@ -1,6 +1,6 @@
 import { create, ortho, rotate } from '../../math'
 
-export const render = (gl, canvas, programInfo, buffers) => {
+export const render = (gl, options, programInfo, buffer) => {
   gl.clearColor(0.0, 0.0, 0.0, 0.0)
   gl.clearDepth(1.0)
   gl.enable(gl.DEPTH_TEST)
@@ -8,12 +8,13 @@ export const render = (gl, canvas, programInfo, buffers) => {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 
   const projectionMatrix = create()
+  const { bledWidth, bledHeight } = options
   ortho(
     projectionMatrix,
-    -canvas.width / 2,
-    canvas.width / 2,
-    canvas.height / 2,
-    -canvas.height / 2,
+    -bledWidth / 2,
+    bledWidth / 2,
+    bledHeight / 2,
+    -bledHeight / 2,
     -1,
     1
   )
@@ -27,7 +28,7 @@ export const render = (gl, canvas, programInfo, buffers) => {
 
   const { program, attributes, uniforms } = programInfo
   gl.useProgram(program)
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffers.positions)
+  gl.bindBuffer(gl.ARRAY_BUFFER, buffer.positions)
 
   const { position, texCoord } = attributes
   // Set vertex positions.

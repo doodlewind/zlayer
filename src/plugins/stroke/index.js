@@ -1,13 +1,15 @@
 import { initProgram } from './shaders'
 import { initBuffer } from './buffer'
 import { initTexture } from './texture'
+import { initFramebufferObject } from './fbo'
 import { render } from './render'
 
-const BasicPlugin = {
+const StrokePlugin = {
   initProgram,
   initBuffer,
   initTexture,
+  initFramebufferObject,
   render
 }
 
-export default BasicPlugin
+export default StrokePlugin
