@@ -11,12 +11,31 @@ const vsSource = `
   }
 `
 
-const fsSource = `
-  varying highp vec2 vTexCoord;
+const fsBasicSource = `
   uniform sampler2D uSampler;
+  varying highp vec2 vTexCoord;
 
   void main() {
     gl_FragColor = texture2D(uSampler, vTexCoord);
+  }
+`
+
+const fsStrokeSource = `
+  uniform sampler2D uSampler;
+  uniform highp vec2 uDelta;
+  varying highp vec2 vTexCoord;
+
+  void main() {
+    if (texture2D(uSampler, vTexCoord).a != 0.0) {
+      gl_FragColor = texture2D(uSampler, vTexCoord);
+    }
+    else {
+      if (texture2D(uSampler, vTexCoord + uDelta).a != 0.0) {
+        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+      } else {
+        gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+      }
+    }
   }
 `
 
@@ -54,17 +73,35 @@ const initShaderProgram = (gl, vsSource, fsSource) => {
 }
 
 export const initShaders = gl => {
-  const program = initShaderProgram(gl, vsSource, fsSource)
-  const shader = {
-    program,
+  const fboProgram = initShaderProgram(gl, vsSource, fsBasicSource)
+  const fboShader = {
+    program: fboProgram,
     attributes: {
-      position: gl.getAttribLocation(program, 'aPosition'),
-      texCoord: gl.getAttribLocation(program, 'aTexCoord')
+      position: gl.getAttribLocation(fboProgram, 'aPosition'),
+      texCoord: gl.getAttribLocation(fboProgram, 'aTexCoord')
     },
     uniforms: {
-      projectionMatrix: gl.getUniformLocation(program, 'uProjectionMatrix'),
-      modelViewMatrix: gl.getUniformLocation(program, 'uModelViewMatrix')
+      projectionMatrix: gl.getUniformLocation(fboProgram, 'uProjectionMatrix'),
+      modelViewMatrix: gl.getUniformLocation(fboProgram, 'uModelViewMatrix')
     }
   }
-  return [shader]
+
+  const strokeProgram = initShaderProgram(gl, vsSource, fsStrokeSource)
+  const strokeShader = {
+    program: strokeProgram,
+    attributes: {
+      position: gl.getAttribLocation(strokeProgram, 'aPosition'),
+      texCoord: gl.getAttribLocation(strokeProgram, 'aTexCoord')
+    },
+    uniforms: {
+      delta: gl.getUniformLocation(strokeProgram, 'uDelta'),
+      projectionMatrix: gl.getUniformLocation(
+        strokeProgram, 'uProjectionMatrix'
+      ),
+      modelViewMatrix: gl.getUniformLocation(
+        strokeProgram, 'uModelViewMatrix'
+      )
+    }
+  }
+  return [fboShader, strokeShader]
 }
