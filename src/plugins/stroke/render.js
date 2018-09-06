@@ -45,7 +45,7 @@ export const render = (gl, options, shaders, buffer, texture, fbo) => {
   const newBuffer = initBuffer(gl, bledWidth, bledHeight)
 
   gl.bindFramebuffer(gl.FRAMEBUFFER, null)
-  gl.viewport(0, 0, bledWidth, bledWidth)
+  gl.viewport(0, 0, bledWidth, bledHeight)
   gl.clearColor(0.0, 0.0, 0.0, 0.0)
   gl.clearDepth(1.0)
   gl.enable(gl.DEPTH_TEST)
