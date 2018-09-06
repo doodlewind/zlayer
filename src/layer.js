@@ -30,6 +30,13 @@ export class Layer {
     // Init texture with image.
     this.image = new Image()
     this.render = () => {
+      const { gl, shaders, buffer, texture, fbo } = this
+      render(gl, options, shaders, buffer, texture, fbo)
+    }
+
+    this.image.onload = () => {
+      this.gl = this.canvas.getContext('webgl', { preserveDrawingBuffer: true })
+      this.shaders = initShaders(this.gl)
       // Use image size as default size.
       if (this.width === undefined || this.height === undefined) {
         this.width = options.width = this.image.naturalWidth
@@ -39,9 +46,6 @@ export class Layer {
       options.bledHeight = bleeding ? this.height + bleeding * 2 : this.height
       this.canvas.width = options.bledWidth
       this.canvas.height = options.bledHeight
-
-      this.gl = this.canvas.getContext('webgl', { preserveDrawingBuffer: true })
-      this.shaders = initShaders(this.gl)
       // Before first pass, use position without bleeding.
       this.buffer = initBuffer(this.gl, this.width, this.height)
 
@@ -51,10 +55,9 @@ export class Layer {
       this.fbo = initFramebufferObject
         ? initFramebufferObject(this.gl, options.bledWidth, options.bledHeight)
         : null
-      const { gl, shaders, buffer, texture, fbo } = this
-      render(gl, options, shaders, buffer, texture, fbo)
+      if (!options.cloak) this.render()
     }
-    if (!options.cloak) this.image.onload = this.render
+
     this.image.crossOrigin = ''
     this.image.src = options.src
   }
