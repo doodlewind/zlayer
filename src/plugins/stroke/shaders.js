@@ -50,24 +50,15 @@ int getIsStrokeWithAngel(float angel) {
 void main() {
   vec4 px = texture2D(uSampler, vec2(vTexCoord.x, vTexCoord.y));
 
-  if (px.a >= 0.5) {
+  if (px.a >= 0.8) {
     gl_FragColor = px;
     return;
   }
 
   int strokeCount = 0;
-  strokeCount += getIsStrokeWithAngel(0.0);
-  strokeCount += getIsStrokeWithAngel(30.0);
-  strokeCount += getIsStrokeWithAngel(60.0);
-  strokeCount += getIsStrokeWithAngel(90.0);
-  strokeCount += getIsStrokeWithAngel(120.0);
-  strokeCount += getIsStrokeWithAngel(150.0);
-  strokeCount += getIsStrokeWithAngel(180.0);
-  strokeCount += getIsStrokeWithAngel(210.0);
-  strokeCount += getIsStrokeWithAngel(240.0);
-  strokeCount += getIsStrokeWithAngel(270.0);
-  strokeCount += getIsStrokeWithAngel(300.0);
-  strokeCount += getIsStrokeWithAngel(330.0);
+  for (float i = 0.0; i <= 330.0; i += 5.0) {
+    strokeCount += getIsStrokeWithAngel(i);
+  }
 
   if (strokeCount > 0) {
     px = outlineColor;
