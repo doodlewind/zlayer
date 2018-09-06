@@ -54,6 +54,7 @@ export class Layer {
       const { gl, shaders, buffer, texture, fbo } = this
       render(gl, options, shaders, buffer, texture, fbo)
     }
+    this.image.crossOrigin = ''
     this.image.src = options.src
   }
 }

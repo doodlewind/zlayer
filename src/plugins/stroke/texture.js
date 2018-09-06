@@ -26,6 +26,7 @@ export const initTexture = (gl, image) => {
     pixel
   )
   gl.bindTexture(gl.TEXTURE_2D, texture)
+  gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true)
   gl.texImage2D(
     gl.TEXTURE_2D,
     level,
