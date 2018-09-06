@@ -29,7 +29,7 @@ export class Layer {
 
     // Init texture with image.
     this.image = new Image()
-    this.image.onload = () => {
+    this.render = () => {
       // Use image size as default size.
       if (this.width === undefined || this.height === undefined) {
         this.width = options.width = this.image.naturalWidth
@@ -54,6 +54,7 @@ export class Layer {
       const { gl, shaders, buffer, texture, fbo } = this
       render(gl, options, shaders, buffer, texture, fbo)
     }
+    if (!options.cloak) this.image.onload = this.render
     this.image.crossOrigin = ''
     this.image.src = options.src
   }

@@ -23,7 +23,7 @@ const drawPlane = (gl, w, h, shader, buffer) => {
   gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, FSIZE * 4, FSIZE * 2)
   gl.enableVertexAttribArray(texCoord)
 
-  if (uniforms.delta) gl.uniform2fv(uniforms.delta, [1 / w, 1 / h])
+  if (uniforms.textureSize) gl.uniform2fv(uniforms.textureSize, [w, h])
   gl.uniformMatrix4fv(uniforms.projectionMatrix, false, projectionMatrix)
   gl.uniformMatrix4fv(uniforms.modelViewMatrix, false, modelViewMatrix)
 
