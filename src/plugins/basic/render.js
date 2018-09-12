@@ -1,6 +1,8 @@
 import { create, ortho, rotate } from '../../math'
 
 export const render = (gl, options, shaders, buffer) => {
+  const { bledWidth, bledHeight } = options
+  gl.viewport(0, 0, bledWidth, bledHeight)
   gl.clearColor(0.0, 0.0, 0.0, 0.0)
   gl.clearDepth(1.0)
   gl.enable(gl.DEPTH_TEST)
@@ -8,7 +10,6 @@ export const render = (gl, options, shaders, buffer) => {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 
   const projectionMatrix = create()
-  const { bledWidth, bledHeight } = options
   ortho(
     projectionMatrix,
     -bledWidth / 2,
