@@ -41,8 +41,19 @@ export const render = (gl, options, shaders, buffer, texture, fbo) => {
   gl.bindTexture(gl.TEXTURE_2D, texture)
   drawPlane(gl, bledWidth, bledHeight, shaders[0], buffer)
 
-  const { initBuffer } = plugin
+  const { initBuffer, initFramebufferObject } = plugin
   const newBuffer = initBuffer(gl, bledWidth, bledHeight)
+
+  const newFBO = initFramebufferObject(gl, bledWidth, bledHeight)
+  gl.bindFramebuffer(gl.FRAMEBUFFER, newFBO.framebuffer)
+  gl.viewport(0, 0, bledWidth, bledHeight)
+  gl.clearColor(0.0, 0.0, 0.0, 0.0)
+  gl.activeTexture(gl.TEXTURE0)
+  gl.bindTexture(gl.TEXTURE_2D, fbo.texture)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+  drawPlane(gl, bledWidth, bledHeight, shaders[0], buffer)
 
   gl.bindFramebuffer(gl.FRAMEBUFFER, null)
   gl.viewport(0, 0, bledWidth, bledHeight)
@@ -50,7 +61,7 @@ export const render = (gl, options, shaders, buffer, texture, fbo) => {
   gl.clear(gl.COLOR_BUFFER_BIT)
 
   gl.activeTexture(gl.TEXTURE0)
-  gl.bindTexture(gl.TEXTURE_2D, fbo.texture)
+  gl.bindTexture(gl.TEXTURE_2D, newFBO.texture)
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
