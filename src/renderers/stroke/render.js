@@ -1,17 +1,10 @@
-import { math } from '../../utils'
+import { clearGL, initMats } from '../../utils'
 
 const drawPlane = (gl, w, h, shader, buffer) => {
-  const projectionMatrix = math.create()
-  math.ortho(projectionMatrix, -w / 2, w / 2, h / 2, -h / 2, -1, 1)
-
-  const modelViewMatrix = math.create()
-
-  const angle = Math.PI / 180 * 0 // Math.PI / 180 * deg
-  math.rotate(modelViewMatrix, modelViewMatrix, angle, [0.0, 0.0, 1.0])
-
+  const { projectionMatrix, modelViewMatrix } = initMats(w, h)
   const FSIZE = Float32Array.BYTES_PER_ELEMENT
-
   const { program, attributes, uniforms } = shader
+
   gl.useProgram(program)
   gl.bindBuffer(gl.ARRAY_BUFFER, buffer.positions)
 
@@ -31,23 +24,22 @@ const drawPlane = (gl, w, h, shader, buffer) => {
 }
 
 export function render () {
-  const { options, gl } = this
-  const { renderer, bledWidth, bledHeight } = options
+  const { options, gl, image } = this
+  const { renderer, width, height, bledWidth, bledHeight } = options
   const {
     initShaders, initBuffer, initTexture, initFramebufferObject
   } = renderer
-  const shaders = initShaders(this.gl)
+  const shaders = initShaders(gl)
   // Before first pass, use position without bleeding.
-  const buffer = initBuffer(this.gl, options.width, options.height)
+  const buffer = initBuffer(gl, width, height)
   // Async render on image loaded.
-  const texture = initTexture(this.gl, this.image)
+  const texture = initTexture(gl, image)
   // Init FBO without bleeding.
   const fbo = initFramebufferObject(gl, bledWidth, bledHeight)
 
   gl.bindFramebuffer(gl.FRAMEBUFFER, fbo.framebuffer)
   gl.viewport(0, 0, bledWidth, bledHeight)
-  gl.clearColor(0.0, 0.0, 0.0, 0.0)
-  gl.clear(gl.COLOR_BUFFER_BIT)
+  clearGL(gl)
   gl.activeTexture(gl.TEXTURE0)
   gl.bindTexture(gl.TEXTURE_2D, texture)
   drawPlane(gl, bledWidth, bledHeight, shaders[0], buffer)
@@ -56,8 +48,7 @@ export function render () {
 
   gl.bindFramebuffer(gl.FRAMEBUFFER, null)
   gl.viewport(0, 0, bledWidth, bledHeight)
-  gl.clearColor(0.0, 0.0, 0.0, 0.0)
-  gl.clear(gl.COLOR_BUFFER_BIT)
+  clearGL(gl)
 
   gl.activeTexture(gl.TEXTURE0)
   gl.bindTexture(gl.TEXTURE_2D, fbo.texture)

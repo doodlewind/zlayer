@@ -1,39 +1,22 @@
-import { math } from '../../utils'
+import { clearGL, initMats } from '../../utils'
 
 export function render () {
-  const { options, gl } = this
-  const { renderer, bledWidth, bledHeight } = options
+  const { options, gl, image } = this
+  const { renderer, width, height, bledWidth, bledHeight } = options
   const { initShaders, initBuffer, initTexture } = renderer
 
-  this.shaders = initShaders(this.gl)
+  this.shaders = initShaders(gl)
   // Before first pass, use position without bleeding.
-  this.buffer = initBuffer(this.gl, options.width, options.height)
+  this.buffer = initBuffer(gl, width, height)
   // Async render on image loaded.
-  this.texture = initTexture(this.gl, this.image)
+  this.texture = initTexture(gl, image)
 
-  gl.clearColor(0.0, 0.0, 0.0, 0.0)
-  gl.clearDepth(1.0)
-  gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
+  clearGL(gl)
 
-  const projectionMatrix = math.create()
-  math.ortho(
-    projectionMatrix,
-    -bledWidth / 2,
-    bledWidth / 2,
-    bledHeight / 2,
-    -bledHeight / 2,
-    -1,
-    1
-  )
-
-  const modelViewMatrix = math.create()
-
-  const angle = Math.PI / 180 * 0 // Math.PI / 180 * deg
-  math.rotate(modelViewMatrix, modelViewMatrix, angle, [0.0, 0.0, 1.0])
-
+  const { projectionMatrix, modelViewMatrix } = initMats(bledWidth, bledHeight)
   const FSIZE = Float32Array.BYTES_PER_ELEMENT
-
   const { program, attributes, uniforms } = this.shaders[0]
+
   gl.useProgram(program)
   gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer.positions)
 

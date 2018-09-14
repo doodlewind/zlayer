@@ -1,6 +1,5 @@
 import { initShaders } from './shaders'
-import { initBuffer, initTexture } from '../../utils'
-import { initFramebufferObject } from './fbo'
+import { initBuffer, initTexture, initFramebufferObject } from '../../utils'
 import { render } from './render'
 
 const StrokeRenderer = {
