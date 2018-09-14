@@ -1,6 +1,5 @@
 import { initShaders } from './shaders'
-import { initBuffer } from './buffer'
-import { initTexture } from './texture'
+import { initBuffer, initTexture } from '../../utils'
 import { initFramebufferObject } from './fbo'
 import { render } from './render'
 

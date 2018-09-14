@@ -1,13 +1,13 @@
-import { create, ortho, rotate } from '../../math'
+import { math } from '../../utils'
 
 const drawPlane = (gl, w, h, shader, buffer) => {
-  const projectionMatrix = create()
-  ortho(projectionMatrix, -w / 2, w / 2, h / 2, -h / 2, -1, 1)
+  const projectionMatrix = math.create()
+  math.ortho(projectionMatrix, -w / 2, w / 2, h / 2, -h / 2, -1, 1)
 
-  const modelViewMatrix = create()
+  const modelViewMatrix = math.create()
 
   const angle = Math.PI / 180 * 0 // Math.PI / 180 * deg
-  rotate(modelViewMatrix, modelViewMatrix, angle, [0.0, 0.0, 1.0])
+  math.rotate(modelViewMatrix, modelViewMatrix, angle, [0.0, 0.0, 1.0])
 
   const FSIZE = Float32Array.BYTES_PER_ELEMENT
 

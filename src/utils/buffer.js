@@ -1,4 +1,4 @@
-export function initBuffer (gl, width, height) {
+export const initBuffer = (gl, width, height) => {
   const [hW, hH] = [width / 2, height / 2]
   const positions = new Float32Array([
     hW, hH, 1.0, 1.0,

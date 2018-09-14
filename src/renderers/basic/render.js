@@ -1,4 +1,4 @@
-import { create, ortho, rotate } from '../../math'
+import { math } from '../../utils'
 
 export function render () {
   const { options, gl } = this
@@ -15,8 +15,8 @@ export function render () {
   gl.clearDepth(1.0)
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 
-  const projectionMatrix = create()
-  ortho(
+  const projectionMatrix = math.create()
+  math.ortho(
     projectionMatrix,
     -bledWidth / 2,
     bledWidth / 2,
@@ -26,10 +26,10 @@ export function render () {
     1
   )
 
-  const modelViewMatrix = create()
+  const modelViewMatrix = math.create()
 
   const angle = Math.PI / 180 * 0 // Math.PI / 180 * deg
-  rotate(modelViewMatrix, modelViewMatrix, angle, [0.0, 0.0, 1.0])
+  math.rotate(modelViewMatrix, modelViewMatrix, angle, [0.0, 0.0, 1.0])
 
   const FSIZE = Float32Array.BYTES_PER_ELEMENT
 
