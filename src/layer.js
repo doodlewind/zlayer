@@ -2,14 +2,10 @@
 
 export class Layer {
   constructor (el, options) {
-    const {
-      initShaders, initBuffer, initTexture, initFramebufferObject, render
-    } = options.plugin
-
-    this.bleeding = options.bleeding
+    this.options = options
     this.src = options.src || ''
 
-    const { bleeding } = this
+    const { bleeding } = options
     // Init this.canvas instance.
     if (el instanceof HTMLCanvasElement) {
       this.canvas = el
@@ -17,7 +13,7 @@ export class Layer {
       const { width, height } = el.getBoundingClientRect()
       // Ignore default size when use bleeding with DOM container.
       if (bleeding !== undefined) {
-        [this.width, this.height] = [width, height]
+        [options.width, options.height] = [width, height]
       }
       this.canvas = document.createElement('canvas')
       this.canvas.style.position = 'absolute'
@@ -29,32 +25,20 @@ export class Layer {
 
     // Init texture with image.
     this.image = new Image()
-    this.render = () => {
-      const { gl, shaders, buffer, texture, fbo } = this
-      render(gl, options, shaders, buffer, texture, fbo)
-    }
+    this.render = options.plugin.render.bind(this)
 
     this.image.onload = () => {
-      this.gl = this.canvas.getContext('webgl', { preserveDrawingBuffer: true })
-      this.shaders = initShaders(this.gl)
       // Use image size as default size.
-      if (this.width === undefined || this.height === undefined) {
-        this.width = options.width = this.image.naturalWidth
-        this.height = options.height = this.image.naturalHeight
+      if (options.width === undefined || options.height === undefined) {
+        options.width = this.image.naturalWidth
+        options.height = this.image.naturalHeight
       }
-      options.bledWidth = bleeding ? this.width + bleeding * 2 : this.width
-      options.bledHeight = bleeding ? this.height + bleeding * 2 : this.height
+      options.bledWidth = options.width + (bleeding ? bleeding * 2 : 0)
+      options.bledHeight = options.height + (bleeding ? bleeding * 2 : 0)
+
       this.canvas.width = options.bledWidth
       this.canvas.height = options.bledHeight
-      // Before first pass, use position without bleeding.
-      this.buffer = initBuffer(this.gl, this.width, this.height)
-
-      // Async render on image loaded.
-      this.texture = initTexture(this.gl, this.image, this.render)
-      // Init FBO without bleeding.
-      this.fbo = initFramebufferObject
-        ? initFramebufferObject(this.gl, options.bledWidth, options.bledHeight)
-        : null
+      this.gl = this.canvas.getContext('webgl', { preserveDrawingBuffer: true })
       if (!options.cloak) this.render()
     }
 

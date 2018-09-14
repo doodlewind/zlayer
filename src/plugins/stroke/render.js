@@ -30,8 +30,17 @@ const drawPlane = (gl, w, h, shader, buffer) => {
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 }
 
-export const render = (gl, options, shaders, buffer, texture, fbo) => {
+export function render () {
+  const { options, gl } = this
   const { plugin, bledWidth, bledHeight } = options
+  const { initShaders, initBuffer, initTexture, initFramebufferObject } = plugin
+  const shaders = initShaders(this.gl)
+  // Before first pass, use position without bleeding.
+  const buffer = initBuffer(this.gl, options.width, options.height)
+  // Async render on image loaded.
+  const texture = initTexture(this.gl, this.image)
+  // Init FBO without bleeding.
+  const fbo = initFramebufferObject(gl, bledWidth, bledHeight)
 
   gl.bindFramebuffer(gl.FRAMEBUFFER, fbo.framebuffer)
   gl.viewport(0, 0, bledWidth, bledHeight)
@@ -41,7 +50,6 @@ export const render = (gl, options, shaders, buffer, texture, fbo) => {
   gl.bindTexture(gl.TEXTURE_2D, texture)
   drawPlane(gl, bledWidth, bledHeight, shaders[0], buffer)
 
-  const { initBuffer } = plugin
   const newBuffer = initBuffer(gl, bledWidth, bledHeight)
 
   gl.bindFramebuffer(gl.FRAMEBUFFER, null)

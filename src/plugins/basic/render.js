@@ -1,12 +1,18 @@
 import { create, ortho, rotate } from '../../math'
 
-export const render = (gl, options, shaders, buffer) => {
-  const { bledWidth, bledHeight } = options
-  gl.viewport(0, 0, bledWidth, bledHeight)
+export function render () {
+  const { options, gl } = this
+  const { plugin, bledWidth, bledHeight } = options
+  const { initShaders, initBuffer, initTexture } = plugin
+
+  this.shaders = initShaders(this.gl)
+  // Before first pass, use position without bleeding.
+  this.buffer = initBuffer(this.gl, options.width, options.height)
+  // Async render on image loaded.
+  this.texture = initTexture(this.gl, this.image)
+
   gl.clearColor(0.0, 0.0, 0.0, 0.0)
   gl.clearDepth(1.0)
-  gl.enable(gl.DEPTH_TEST)
-  gl.depthFunc(gl.LEQUAL)
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT)
 
   const projectionMatrix = create()
@@ -27,9 +33,9 @@ export const render = (gl, options, shaders, buffer) => {
 
   const FSIZE = Float32Array.BYTES_PER_ELEMENT
 
-  const { program, attributes, uniforms } = shaders[0]
+  const { program, attributes, uniforms } = this.shaders[0]
   gl.useProgram(program)
-  gl.bindBuffer(gl.ARRAY_BUFFER, buffer.positions)
+  gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer.positions)
 
   const { position, texCoord } = attributes
   // Set vertex positions.
