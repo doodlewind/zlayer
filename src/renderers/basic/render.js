@@ -1,11 +1,10 @@
 import { clearGL, initMats } from '../../utils'
 
 export function render () {
-  const { options, gl, image } = this
+  const { options, gl, shaders, image } = this
   const { renderer, width, height, bledWidth, bledHeight } = options
-  const { initShaders, initBuffer, initTexture } = renderer
+  const { initBuffer, initTexture } = renderer
 
-  this.shaders = initShaders(gl)
   // Before first pass, use position without bleeding.
   this.buffer = initBuffer(gl, width, height)
   // Async render on image loaded.
@@ -15,7 +14,7 @@ export function render () {
 
   const { projectionMatrix, modelViewMatrix } = initMats(bledWidth, bledHeight)
   const FSIZE = Float32Array.BYTES_PER_ELEMENT
-  const { program, attributes, uniforms } = this.shaders[0]
+  const { program, attributes, uniforms } = shaders[0]
 
   gl.useProgram(program)
   gl.bindBuffer(gl.ARRAY_BUFFER, this.buffer.positions)

@@ -25,7 +25,8 @@ export class Layer {
 
     // Init texture with image.
     this.image = new Image()
-    this.render = options.renderer.render.bind(this)
+    const { render, initShaders } = options.renderer
+    this.render = render.bind(this)
 
     this.image.onload = () => {
       // Use image size as default size.
@@ -39,6 +40,7 @@ export class Layer {
       this.canvas.width = options.bledWidth
       this.canvas.height = options.bledHeight
       this.gl = this.canvas.getContext('webgl', { preserveDrawingBuffer: true })
+      this.shaders = initShaders(this.gl)
       if (!options.cloak) this.render()
     }
 

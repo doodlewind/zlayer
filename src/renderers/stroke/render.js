@@ -24,12 +24,9 @@ const drawPlane = (gl, w, h, shader, buffer) => {
 }
 
 export function render () {
-  const { options, gl, image } = this
+  const { options, gl, shaders, image } = this
   const { renderer, width, height, bledWidth, bledHeight } = options
-  const {
-    initShaders, initBuffer, initTexture, initFramebufferObject
-  } = renderer
-  const shaders = initShaders(gl)
+  const { initBuffer, initTexture, initFramebufferObject } = renderer
   // Before first pass, use position without bleeding.
   const buffer = initBuffer(gl, width, height)
   // Async render on image loaded.
