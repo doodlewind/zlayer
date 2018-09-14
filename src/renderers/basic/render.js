@@ -2,8 +2,8 @@ import { create, ortho, rotate } from '../../math'
 
 export function render () {
   const { options, gl } = this
-  const { plugin, bledWidth, bledHeight } = options
-  const { initShaders, initBuffer, initTexture } = plugin
+  const { renderer, bledWidth, bledHeight } = options
+  const { initShaders, initBuffer, initTexture } = renderer
 
   this.shaders = initShaders(this.gl)
   // Before first pass, use position without bleeding.

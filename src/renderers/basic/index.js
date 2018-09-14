@@ -3,11 +3,11 @@ import { initBuffer } from './buffer'
 import { initTexture } from './texture'
 import { render } from './render'
 
-const BasicPlugin = {
+const BasicRenderer = {
   initShaders,
   initBuffer,
   initTexture,
   render
 }
 
-export default BasicPlugin
+export default BasicRenderer

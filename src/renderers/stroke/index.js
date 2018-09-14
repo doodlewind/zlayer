@@ -4,7 +4,7 @@ import { initTexture } from './texture'
 import { initFramebufferObject } from './fbo'
 import { render } from './render'
 
-const StrokePlugin = {
+const StrokeRenderer = {
   initShaders,
   initBuffer,
   initTexture,
@@ -12,4 +12,4 @@ const StrokePlugin = {
   render
 }
 
-export default StrokePlugin
+export default StrokeRenderer

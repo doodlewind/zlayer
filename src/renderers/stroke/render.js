@@ -32,8 +32,10 @@ const drawPlane = (gl, w, h, shader, buffer) => {
 
 export function render () {
   const { options, gl } = this
-  const { plugin, bledWidth, bledHeight } = options
-  const { initShaders, initBuffer, initTexture, initFramebufferObject } = plugin
+  const { renderer, bledWidth, bledHeight } = options
+  const {
+    initShaders, initBuffer, initTexture, initFramebufferObject
+  } = renderer
   const shaders = initShaders(this.gl)
   // Before first pass, use position without bleeding.
   const buffer = initBuffer(this.gl, options.width, options.height)

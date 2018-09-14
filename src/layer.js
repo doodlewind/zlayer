@@ -25,7 +25,7 @@ export class Layer {
 
     // Init texture with image.
     this.image = new Image()
-    this.render = options.plugin.render.bind(this)
+    this.render = options.renderer.render.bind(this)
 
     this.image.onload = () => {
       // Use image size as default size.
