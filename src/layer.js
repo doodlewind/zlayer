@@ -40,7 +40,7 @@ export class Layer {
       this.canvas.width = options.bledWidth
       this.canvas.height = options.bledHeight
       this.gl = this.canvas.getContext('webgl', { preserveDrawingBuffer: true })
-      this.shaders = initShaders(this.gl)
+      this.shaders = initShaders.call(this, this.gl)
       if (!options.cloak) this.render()
     }
 
