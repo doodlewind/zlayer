@@ -1,4 +1,5 @@
 /* eslint-env browser */
+import { initBasicShader, drawBledTexture } from './utils'
 
 export class Layer {
   constructor (el, options) {
@@ -40,8 +41,13 @@ export class Layer {
       this.canvas.width = options.bledWidth
       this.canvas.height = options.bledHeight
       this.gl = this.canvas.getContext('webgl', { preserveDrawingBuffer: true })
+
+      this.baseShader = initBasicShader(this.gl)
       this.shaders = initShaders(this.gl)
-      if (!options.cloak) this.render()
+      const bledTexture = drawBledTexture(
+        this.gl, options, this.baseShader, this.image
+      )
+      if (!options.cloak) this.render(bledTexture)
     }
 
     this.image.crossOrigin = ''

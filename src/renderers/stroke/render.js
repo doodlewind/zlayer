@@ -16,42 +16,29 @@ const drawPlane = (gl, w, h, shader, buffer) => {
   gl.vertexAttribPointer(texCoord, 2, gl.FLOAT, false, FSIZE * 4, FSIZE * 2)
   gl.enableVertexAttribArray(texCoord)
 
-  if (uniforms.textureSize) gl.uniform2fv(uniforms.textureSize, [w, h])
+  gl.uniform2fv(uniforms.textureSize, [w, h])
   gl.uniformMatrix4fv(uniforms.projectionMatrix, false, projectionMatrix)
   gl.uniformMatrix4fv(uniforms.modelViewMatrix, false, modelViewMatrix)
 
   gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4)
 }
 
-export function render () {
-  const { options, gl, shaders, image } = this
-  const { renderer, width, height, bledWidth, bledHeight } = options
-  const { initBuffer, initTexture, initFramebufferObject } = renderer
-  // Before first pass, use position without bleeding.
-  const buffer = initBuffer(gl, width, height)
-  // Async render on image loaded.
-  const texture = initTexture(gl, image)
-  // Init FBO without bleeding.
-  const fbo = initFramebufferObject(gl, bledWidth, bledHeight)
+export function render (texture) {
+  const { options, gl, shaders } = this
+  const { renderer, bledWidth, bledHeight } = options
+  const { initBuffer } = renderer
 
-  gl.bindFramebuffer(gl.FRAMEBUFFER, fbo.framebuffer)
-  gl.viewport(0, 0, bledWidth, bledHeight)
-  clearGL(gl)
-  gl.activeTexture(gl.TEXTURE0)
-  gl.bindTexture(gl.TEXTURE_2D, texture)
-  drawPlane(gl, bledWidth, bledHeight, shaders[0], buffer)
-
-  const newBuffer = initBuffer(gl, bledWidth, bledHeight)
+  const buffer = initBuffer(gl, bledWidth, bledHeight)
 
   gl.bindFramebuffer(gl.FRAMEBUFFER, null)
   gl.viewport(0, 0, bledWidth, bledHeight)
   clearGL(gl)
 
   gl.activeTexture(gl.TEXTURE0)
-  gl.bindTexture(gl.TEXTURE_2D, fbo.texture)
+  gl.bindTexture(gl.TEXTURE_2D, texture)
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
 
-  drawPlane(gl, bledWidth, bledHeight, shaders[1], newBuffer)
+  drawPlane(gl, bledWidth, bledHeight, shaders[0], buffer)
 }

@@ -1,32 +1,10 @@
-import { initShaderProgram } from '../../utils'
-
-const vsSource = `
-  attribute vec4 aPosition;
-  attribute vec2 aTexCoord;
-  uniform mat4 uProjectionMatrix;
-  uniform mat4 uModelViewMatrix;
-  varying highp vec2 vTexCoord;
-
-  void main() {
-    gl_Position = uProjectionMatrix * uModelViewMatrix * aPosition;
-    vTexCoord = aTexCoord;
-  }
-`
-
-const fsFBOSource = `
-  uniform sampler2D uSampler;
-  varying highp vec2 vTexCoord;
-
-  void main() {
-    gl_FragColor = texture2D(uSampler, vTexCoord);
-  }
-`
+import { initShaderProgram, basicVS } from '../../utils'
 
 // See https://blog.csdn.net/zhenyu5211314/article/details/51781894
-const fsStrokeSource = `
+const strokeFS = `
 precision highp float;
-uniform sampler2D uSampler;
-uniform vec2 uTextureSize; 
+uniform sampler2D sampler;
+uniform vec2 textureSize; 
 varying highp vec2 vTexCoord;
 
 float outlineSize = 10.0;
@@ -36,10 +14,10 @@ int getIsStrokeWithAngel(float angel) {
   int stroke = 0;
   float rad = angel * 0.01745329252; // Magic number for PI / 180
   float a = texture2D(
-    uSampler,
+    sampler,
     vec2(
-      vTexCoord.x + outlineSize * cos(rad) / uTextureSize.x,
-      vTexCoord.y + outlineSize * sin(rad) / uTextureSize.y
+      vTexCoord.x + outlineSize * cos(rad) / textureSize.x,
+      vTexCoord.y + outlineSize * sin(rad) / textureSize.y
     )
   ).a;
 
@@ -50,7 +28,7 @@ int getIsStrokeWithAngel(float angel) {
 }
 
 void main() {
-  vec4 px = texture2D(uSampler, vec2(vTexCoord.x, vTexCoord.y));
+  vec4 px = texture2D(sampler, vec2(vTexCoord.x, vTexCoord.y));
 
   if (px.a >= 0.8) {
     gl_FragColor = px;
@@ -71,35 +49,22 @@ void main() {
 `
 
 export const initShaders = gl => {
-  const fboProgram = initShaderProgram(gl, vsSource, fsFBOSource)
-  const fboShader = {
-    program: fboProgram,
-    attributes: {
-      position: gl.getAttribLocation(fboProgram, 'aPosition'),
-      texCoord: gl.getAttribLocation(fboProgram, 'aTexCoord')
-    },
-    uniforms: {
-      projectionMatrix: gl.getUniformLocation(fboProgram, 'uProjectionMatrix'),
-      modelViewMatrix: gl.getUniformLocation(fboProgram, 'uModelViewMatrix')
-    }
-  }
-
-  const strokeProgram = initShaderProgram(gl, vsSource, fsStrokeSource)
+  const strokeProgram = initShaderProgram(gl, basicVS, strokeFS)
   const strokeShader = {
     program: strokeProgram,
     attributes: {
-      position: gl.getAttribLocation(strokeProgram, 'aPosition'),
-      texCoord: gl.getAttribLocation(strokeProgram, 'aTexCoord')
+      position: gl.getAttribLocation(strokeProgram, 'position'),
+      texCoord: gl.getAttribLocation(strokeProgram, 'texCoord')
     },
     uniforms: {
-      textureSize: gl.getUniformLocation(strokeProgram, 'uTextureSize'),
+      textureSize: gl.getUniformLocation(strokeProgram, 'textureSize'),
       projectionMatrix: gl.getUniformLocation(
-        strokeProgram, 'uProjectionMatrix'
+        strokeProgram, 'projectionMatrix'
       ),
       modelViewMatrix: gl.getUniformLocation(
-        strokeProgram, 'uModelViewMatrix'
+        strokeProgram, 'modelViewMatrix'
       )
     }
   }
-  return [fboShader, strokeShader]
+  return [strokeShader]
 }
