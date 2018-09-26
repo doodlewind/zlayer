@@ -2,7 +2,7 @@ import { initShaders } from './shaders'
 import { initBuffer, initTexture, initFramebufferObject } from '../../utils'
 import { render } from './render'
 
-const StrokeRenderer = {
+const StrokeFilter = {
   initShaders,
   initBuffer,
   initTexture,
@@ -10,4 +10,4 @@ const StrokeRenderer = {
   render
 }
 
-export default StrokeRenderer
+export default StrokeFilter

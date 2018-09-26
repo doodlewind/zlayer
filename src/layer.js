@@ -26,7 +26,7 @@ export class Layer {
 
     // Init texture with image.
     this.image = new Image()
-    const { render, initShaders } = options.renderer
+    const { render, initShaders } = options.filter
     this.render = render.bind(this)
 
     this.image.onload = () => {

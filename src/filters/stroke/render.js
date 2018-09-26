@@ -25,8 +25,8 @@ const drawPlane = (gl, w, h, shader, buffer) => {
 
 export function render (texture) {
   const { options, gl, shaders } = this
-  const { renderer, bledWidth, bledHeight } = options
-  const { initBuffer } = renderer
+  const { filter, bledWidth, bledHeight } = options
+  const { initBuffer } = filter
 
   const buffer = initBuffer(gl, bledWidth, bledHeight)
 
