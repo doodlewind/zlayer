@@ -45,7 +45,7 @@ export class Layer {
       this.gl = this.canvas.getContext('webgl', { preserveDrawingBuffer: true })
 
       this.baseShader = initBasicShader(this.gl)
-      this.shaders = initShaders(this.gl)
+      this.shaders = initShaders.call(this, this.gl)
       const bledTexture = drawBledTexture(
         this.gl, options, this.baseShader, this.image
       )
