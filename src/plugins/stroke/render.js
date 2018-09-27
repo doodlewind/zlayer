@@ -53,7 +53,7 @@ export const render = (gl, options, shaders, buffer, texture, fbo) => {
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
-  drawPlane(gl, bledWidth, bledHeight, shaders[0], buffer)
+  drawPlane(gl, bledWidth, bledHeight, shaders[1], newBuffer)
 
   gl.bindFramebuffer(gl.FRAMEBUFFER, null)
   gl.viewport(0, 0, bledWidth, bledHeight)
@@ -66,5 +66,5 @@ export const render = (gl, options, shaders, buffer, texture, fbo) => {
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
 
-  drawPlane(gl, bledWidth, bledHeight, shaders[1], newBuffer)
+  drawPlane(gl, bledWidth, bledHeight, shaders[2], newBuffer)
 }

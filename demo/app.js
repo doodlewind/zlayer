@@ -7,5 +7,5 @@ const cloak = !!localStorage.cloak
 
 console.clear()
 const el = document.getElementById('canvas')
-const layer = new Layer(el, { src, cloak, plugin, bleeding: 10 })
+const layer = new Layer(el, { src, cloak, plugin, bleeding: 20 })
 window.layer = layer
