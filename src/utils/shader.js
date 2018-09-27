@@ -13,25 +13,25 @@ const loadShader = (gl, type, source) => {
 }
 
 export const basicVS = `
-  attribute vec4 position;
-  attribute vec2 texCoord;
-  uniform mat4 projectionMatrix;
-  uniform mat4 modelViewMatrix;
-  varying highp vec2 vTexCoord;
+attribute vec4 position;
+attribute vec2 texCoord;
+uniform mat4 projectionMatrix;
+uniform mat4 modelViewMatrix;
+varying highp vec2 vTexCoord;
 
-  void main() {
-    gl_Position = projectionMatrix * modelViewMatrix * position;
-    vTexCoord = texCoord;
-  }
+void main() {
+  gl_Position = projectionMatrix * modelViewMatrix * position;
+  vTexCoord = texCoord;
+}
 `
 
 export const basicFS = `
-  uniform sampler2D sampler;
-  varying highp vec2 vTexCoord;
+uniform sampler2D sampler;
+varying highp vec2 vTexCoord;
 
-  void main() {
-    gl_FragColor = texture2D(sampler, vTexCoord);
-  }
+void main() {
+  gl_FragColor = texture2D(sampler, vTexCoord);
+}
 `
 
 export const initBasicShader = gl => {
