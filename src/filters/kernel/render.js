@@ -11,7 +11,15 @@ const defaultKernel = [
   0, 0, 0
 ]
 
-const draw = (gl, w, h, shader, buffer, kernel = defaultKernel) => {
+const drawImage = (
+  gl, w, h, shader, buffer, texture, kernel = defaultKernel
+) => {
+  gl.activeTexture(gl.TEXTURE0)
+  gl.bindTexture(gl.TEXTURE_2D, texture)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+
   const { projectionMatrix, modelViewMatrix } = initMats(w, h)
   const FSIZE = Float32Array.BYTES_PER_ELEMENT
   const { program, attributes, uniforms } = shader
@@ -48,11 +56,5 @@ export function render (texture) {
   gl.viewport(0, 0, bledWidth, bledHeight)
   clearGL(gl)
 
-  gl.activeTexture(gl.TEXTURE0)
-  gl.bindTexture(gl.TEXTURE_2D, texture)
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
-
-  draw(gl, bledWidth, bledHeight, shaders[0], buffer, kernel)
+  drawImage(gl, bledWidth, bledHeight, shaders[0], buffer, texture, kernel)
 }

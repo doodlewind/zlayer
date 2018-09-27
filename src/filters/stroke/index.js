@@ -1,13 +1,6 @@
 import { initShaders } from './shaders'
-import { initBuffer, initTexture, initFramebufferObject } from '../../utils'
 import { render } from './render'
 
-const StrokeFilter = {
-  initShaders,
-  initBuffer,
-  initTexture,
-  initFramebufferObject,
-  render
-}
+const StrokeFilter = { initShaders, render }
 
 export default StrokeFilter

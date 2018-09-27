@@ -1,13 +1,6 @@
 import { initShaders } from './shaders'
-import { initBuffer, initTexture, initFramebufferObject } from '../../utils'
 import { render } from './render'
 
-const KernelFilter = {
-  initShaders,
-  initBuffer,
-  initTexture,
-  initFramebufferObject,
-  render
-}
+const KernelFilter = { initShaders, render }
 
 export default KernelFilter

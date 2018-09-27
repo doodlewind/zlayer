@@ -1,5 +1,5 @@
 /* eslint-env browser */
-import { initBasicShader, drawBledTexture } from './utils'
+import { initBasicShader, drawBledTexture, initBuffer } from './utils'
 
 export class Layer {
   constructor (el, options) {
@@ -27,6 +27,8 @@ export class Layer {
     // Init texture with image.
     this.image = new Image()
     const { render, initShaders } = options.filter
+    // Set up default buffer loader.
+    if (!options.filter.initBuffer) options.filter.initBuffer = initBuffer
     this.render = render.bind(this)
 
     this.image.onload = () => {

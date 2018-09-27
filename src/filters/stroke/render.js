@@ -1,6 +1,12 @@
 import { clearGL, initMats } from '../../utils'
 
-const drawPlane = (gl, w, h, shader, buffer) => {
+const drawImage = (gl, w, h, shader, buffer, texture) => {
+  gl.activeTexture(gl.TEXTURE0)
+  gl.bindTexture(gl.TEXTURE_2D, texture)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
+
   const { projectionMatrix, modelViewMatrix } = initMats(w, h)
   const FSIZE = Float32Array.BYTES_PER_ELEMENT
   const { program, attributes, uniforms } = shader
@@ -34,11 +40,5 @@ export function render (texture) {
   gl.viewport(0, 0, bledWidth, bledHeight)
   clearGL(gl)
 
-  gl.activeTexture(gl.TEXTURE0)
-  gl.bindTexture(gl.TEXTURE_2D, texture)
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE)
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR)
-
-  drawPlane(gl, bledWidth, bledHeight, shaders[0], buffer)
+  drawImage(gl, bledWidth, bledHeight, shaders[0], buffer, texture)
 }
