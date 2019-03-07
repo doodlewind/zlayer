@@ -29,8 +29,7 @@ const moireSrc = './moire-test.png'
 
 console.clear()
 const src = localStorage.src || (localStorage.moire ? moireSrc : lennaSrc)
-const cloak = !!localStorage.cloak
-const baseConf = { src, cloak, bleeding: 10 }
+const baseConf = { src, bleeding: 10 }
 
 window.layers = [
   new Layer(document.getElementById('canvas-kernel'), {

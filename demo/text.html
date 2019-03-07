@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>zlayer Demo</title>
+  </head>
+  <style>
+    html, body { margin: 0; padding: 0; }
+    body { display: flex; flex-direction: column; align-items: center; margin-top: 50px; }
+  </style>
+  <body>
+    <div id="img-container"></div>
+    <canvas id="canvas-text" width="100" height="100"></canvas>
+    <canvas id="canvas-kernel" width="100" height="100"></canvas>
+<script type="module">
+import { Layer } from '../src/layer.js'
+import {
+  StrokeFilter
+} from '../src/filters/index.js'
+
+const render = () => {
+  const textCanvas = document.getElementById('canvas-text')
+  const ctx = textCanvas.getContext('2d')
+  ctx.font = '100px serif';
+  ctx.textBaseline = 'middle'
+  ctx.textAlign = 'center'
+  ctx.fillText('1', 50, 50);
+  const src = textCanvas.toDataURL()
+
+  const layer = new Layer(document.getElementById('canvas-kernel'), {
+    src, filter: StrokeFilter
+  })
+  window.layer = layer
+}
+
+window.onload = render
+</script>
+  </body>
+</html>

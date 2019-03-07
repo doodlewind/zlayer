@@ -49,7 +49,7 @@ export class Layer {
       const bledTexture = drawBledTexture(
         this.gl, options, this.baseShader, this.image
       )
-      if (!options.cloak) this.render(bledTexture)
+      this.render(bledTexture)
     }
 
     this.image.crossOrigin = ''
