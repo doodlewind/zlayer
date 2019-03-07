@@ -21,7 +21,8 @@ int getIsStrokeWithAngel(float angel) {
     )
   ).a;
 
-  if (a >= 0.5) {
+  // mod stroke shader
+  if (a == 1.0) {
     stroke = 1;
   }
   return stroke;
@@ -30,14 +31,15 @@ int getIsStrokeWithAngel(float angel) {
 void main() {
   vec4 px = texture2D(sampler, vec2(vTexCoord.x, vTexCoord.y));
 
-  if (px.a >= 0.8) {
+  // mod stroke shader
+  if (px.a == 1.0) {
     // gl_FragColor = px;
     gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
     return;
   }
 
   int strokeCount = 0;
-  for (float i = 0.0; i <= 330.0; i += 5.0) {
+  for (float i = 0.0; i <= 360.0; i += 45.0) {
     strokeCount += getIsStrokeWithAngel(i);
   }
 
