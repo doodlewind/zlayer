@@ -1,1 +1,1 @@
-export { Layer } from './layer'
+export { Layer } from './layer.js'

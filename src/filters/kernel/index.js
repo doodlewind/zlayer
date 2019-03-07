@@ -1,5 +1,5 @@
-import { initShaders } from './shaders'
-import { render } from './render'
+import { initShaders } from './shaders.js'
+import { render } from './render.js'
 
 export const KernelFilter = { initShaders, render }
 

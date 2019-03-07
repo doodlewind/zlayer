@@ -15,6 +15,38 @@
     <canvas id="canvas-stroke"></canvas>
     <canvas id="canvas-resize-base"></canvas>
     <canvas id="canvas-resize-lanczos"></canvas>
-    <script src="./app.js"></script>
+<script type="module">
+import { Layer } from '../src/layer.js'
+import {
+  KernelFilter,
+  LanczosFilter,
+  StrokeFilter,
+  getUSMKernel
+} from '../src/filters/index.js'
+
+const lennaSrc = './lenna.gif'
+const moireSrc = './moire-test.png'
+
+console.clear()
+const src = localStorage.src || (localStorage.moire ? moireSrc : lennaSrc)
+const cloak = !!localStorage.cloak
+const baseConf = { src, cloak, bleeding: 10 }
+
+window.layers = [
+  new Layer(document.getElementById('canvas-kernel'), {
+    ...baseConf, filter: KernelFilter, kernel: getUSMKernel(1)
+  }),
+  new Layer(document.getElementById('canvas-stroke'), {
+    ...baseConf, filter: StrokeFilter
+  }),
+  new Layer(document.getElementById('canvas-resize-base'), {
+    ...baseConf, filter: KernelFilter, width: 100, height: 100
+  }),
+  new Layer(document.getElementById('canvas-resize-lanczos'), {
+    ...baseConf, filter: LanczosFilter, width: 100, height: 100
+  })
+]
+document.getElementById('img-container').innerHTML = `<img src="${src}"/>`
+</script>
   </body>
 </html>

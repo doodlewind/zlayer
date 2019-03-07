@@ -1,4 +1,4 @@
-import { initShaderProgram, basicVS } from '../../utils'
+import { initShaderProgram, basicVS } from '../../utils/index.js'
 
 const kernelFS = `
 precision highp float;

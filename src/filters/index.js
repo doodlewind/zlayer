@@ -1,3 +1,3 @@
-export * from './kernel'
-export * from './lanczos'
-export * from './stroke'
+export * from './kernel/index.js'
+export * from './lanczos/index.js'
+export * from './stroke/index.js'

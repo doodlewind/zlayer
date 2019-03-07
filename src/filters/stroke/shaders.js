@@ -1,4 +1,4 @@
-import { initShaderProgram, basicVS } from '../../utils'
+import { initShaderProgram, basicVS } from '../../utils/index.js'
 
 // See https://blog.csdn.net/zhenyu5211314/article/details/51781894
 const strokeFS = `

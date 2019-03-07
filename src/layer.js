@@ -1,5 +1,5 @@
 /* eslint-env browser */
-import { initBasicShader, drawBledTexture, initBuffer } from './utils'
+import { initBasicShader, drawBledTexture, initBuffer } from './utils/index.js'
 
 export class Layer {
   constructor (el, options) {

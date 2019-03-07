@@ -1,4 +1,4 @@
-import { clearGL, initMats, initFramebufferObject } from '../../utils'
+import { clearGL, initMats, initFramebufferObject } from '../../utils/index.js'
 
 const drawImage = (
   gl, w, h, shader, buffer, texture, delta

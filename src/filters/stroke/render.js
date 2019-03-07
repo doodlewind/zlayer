@@ -1,4 +1,4 @@
-import { clearGL, initMats } from '../../utils'
+import { clearGL, initMats } from '../../utils/index.js'
 
 const drawImage = (gl, w, h, shader, buffer, texture) => {
   gl.activeTexture(gl.TEXTURE0)

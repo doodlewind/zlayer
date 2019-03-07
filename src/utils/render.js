@@ -1,7 +1,7 @@
-import { create, ortho, rotate } from './math'
-import { initBuffer } from './buffer'
-import { initTexture } from './texture'
-import { initFramebufferObject } from './fbo'
+import { create, ortho, rotate } from './math.js'
+import { initBuffer } from './buffer.js'
+import { initTexture } from './texture.js'
+import { initFramebufferObject } from './fbo.js'
 
 export const clearGL = gl => {
   gl.clearColor(0.0, 0.0, 0.0, 0.0)

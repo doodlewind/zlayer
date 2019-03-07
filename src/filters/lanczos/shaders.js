@@ -1,4 +1,4 @@
-import { initShaderProgram, basicVS } from '../../utils'
+import { initShaderProgram, basicVS } from '../../utils/index.js'
 
 // Simplified Lanczos filter.
 // See https://github.com/BradLarson/GPUImage/issues/1800

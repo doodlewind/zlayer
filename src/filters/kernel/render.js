@@ -1,4 +1,4 @@
-import { clearGL, initMats } from '../../utils'
+import { clearGL, initMats } from '../../utils/index.js'
 
 const computeKernelWeight = kernel => {
   const weight = kernel.reduce((prev, curr) => prev + curr)

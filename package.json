@@ -5,7 +5,10 @@
   "repository": "git@github.com:doodlewind/zlayer.git",
   "author": "Yifeng Wang <i@ewind.us>",
   "license": "MIT",
+  "scripts": {
+    "dev": "http-server -p 10026"
+  },
   "devDependencies": {
-    "babel-preset-stage-0": "^6.24.1"
+    "http-server": "^0.11.1"
   }
 }
