@@ -19,16 +19,15 @@ int getIsStrokeWithAngel(float angel) {
       vTexCoord.y + outlineSize * sin(rad) / textureSize.y
     )
   ).a;
-
   if (a >= 0.5) {
     stroke = 1;
   }
+
   return stroke;
 }
 
 void main() {
   vec4 px = texture2D(sampler, vec2(vTexCoord.x, vTexCoord.y));
-
   if (px.a >= 0.8) {
     gl_FragColor = px;
     return;
