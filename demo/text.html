@@ -10,25 +10,28 @@
   </style>
   <body>
     <div id="img-container"></div>
-    <canvas id="canvas-text" width="100" height="100"></canvas>
-    <canvas id="canvas-kernel" width="100" height="100"></canvas>
+    <canvas id="canvas-text" width="50" height="50" hidden></canvas>
+    <canvas id="canvas-kernel" width="50" height="50"></canvas>
 <script type="module">
 import { Layer } from '../src/layer.js'
 import { OutlineFilter } from '../src/filters/index.js'
+import { parseBitmap } from './text-processing/index.js'
 
 const render = () => {
   const textCanvas = document.getElementById('canvas-text')
   const ctx = textCanvas.getContext('2d')
-  ctx.font = '100px serif';
+  ctx.font = '50px serif';
   ctx.textBaseline = 'middle'
   ctx.textAlign = 'center'
-  ctx.fillText('1', 50, 50);
+  ctx.fillText('1', 25, 25);
   const src = textCanvas.toDataURL()
 
   const layer = new Layer(document.getElementById('canvas-kernel'), {
     src, filter: OutlineFilter
   })
   window.layer = layer
+
+  setTimeout(() => parseBitmap(layer.canvas), 100)
 }
 
 window.onload = render
