@@ -27,8 +27,7 @@ int getIsStrokeWithAngel(float angel) {
 void main() {
   vec4 px = texture2D(sampler, vec2(vTexCoord.x, vTexCoord.y));
   if (px.a == 1.0) {
-    // gl_FragColor = px;
-    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+    gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
     return;
   }
 
