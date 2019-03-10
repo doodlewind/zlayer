@@ -20,10 +20,10 @@ import { parseBitmap } from './text-processing/index.js'
 const render = () => {
   const textCanvas = document.getElementById('canvas-text')
   const ctx = textCanvas.getContext('2d')
-  ctx.font = '50px serif';
+  ctx.font = '50px serif'
   ctx.textBaseline = 'middle'
   ctx.textAlign = 'center'
-  ctx.fillText('1', 25, 25);
+  ctx.fillText('1', 25, 25)
   const src = textCanvas.toDataURL()
 
   const layer = new Layer(document.getElementById('canvas-kernel'), {
