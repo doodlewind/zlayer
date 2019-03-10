@@ -4,11 +4,5 @@
   "main": "src/index.js",
   "repository": "git@github.com:doodlewind/zlayer.git",
   "author": "Yifeng Wang <i@ewind.us>",
-  "license": "MIT",
-  "scripts": {
-    "dev": "http-server -p 10026"
-  },
-  "devDependencies": {
-    "http-server": "^0.11.1"
-  }
+  "license": "MIT"
 }
